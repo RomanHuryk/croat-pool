@@ -67,7 +67,12 @@
 	function getCheckTime(timestamp) {
 		return timestamp ? $.timeago(new Date(timestamp * 1000).toISOString()) : null;
 	}
-
+        
+	function formatDate(time){
+            if (!time) return '';
+                    return new Date(parseInt(time) * 1000).toLocaleString();
+        }
+	
 	function monitoringInfoParse(data) {
 		var monitoringDaemon = {
 			lastCheck: getCheckTime(data['monitoring'].daemon.lastCheck) || 'never',
@@ -85,15 +90,14 @@
 		};
 		var properData = {};
 
-		for(var prop in data) {
-			if(data.hasOwnProperty('logs')) {
-				properData['logs'] = data['logs'];
-				for(var log in data['logs']) {
-					properData['logs'][log].changed = Date(data['logs'][log].changed * 1000);
-					data['logs'][log].link = api + '/admin_log?file=' + log + '&password=' + docCookies.getItem('password');
-				}
-			}
-		}
+                if(data.hasOwnProperty('logs')==true) {
+                        properData['logs'] = data['logs'];
+                    for(var log in data['logs']) {
+                        data['logs'][log].changed = formatDate(data['logs'][log].changed);
+                        data['logs'][log].link = api + '/admin_log?file=' + log + '&password=' + docCookies.getItem('password');
+                    }
+                }
+
 		properData['monitoringDaemon'] = monitoringDaemon;
 		properData['monitoringWallet'] = monitoringWallet;
 
