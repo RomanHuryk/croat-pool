@@ -321,7 +321,13 @@ Explanation for each field:
 "redis": {
     "host": "127.0.0.1",
     "port": 6379
-}
+},
+
+/* Time (in days) before delete data from redis of wallet without activity */
+ "userHistory":{
+     "maxWalletHistory": 60
+ },
+
 
 /* Monitoring RPC services. Statistics will be displayed in Admin panel */
 "monitoring": {
